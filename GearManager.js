@@ -1,6 +1,6 @@
 /*
 GearManager
-Enables easy adding & updating of Potions in the 5e Shaped Utilities section.
+Enables easy adding of select Adventuring Gear and Wondrous Items to the 5e Shaped sheet to more appropriate sections for easier use and access.
 
 On Github:	https://github.com/blawson69
 Contact me: https://app.roll20.net/users/1781274/ben-l

@@ -1,6 +1,6 @@
 # GearManager
 
-This [Roll20](http://roll20.net/) script fixes a flaw in the [5e Shaped Sheet](http://github.com/mlenser/roll20-character-sheets/tree/master/5eShaped) where the items in the Equipment section are only accessible by opening the character sheet. GearManager adds select Adventuring Gear and Wondrous Items to the Utility or Offense section of the character sheet instead of the Equipment section,  allowing easy access to them using the sheet's built-in macros `%{shaped_utility}` and `%{shaped_offense}`. You can also add them to the Attributes & Abilities tab if you like.
+This [Roll20](http://roll20.net/) script fixes a drawback to the [5e Shaped Sheet](http://github.com/mlenser/roll20-character-sheets/tree/master/5eShaped) where the items in the Equipment section are only accessible by opening the character sheet. GearManager adds select Adventuring Gear and Wondrous Items to the Utility or Offense section of the character sheet instead of the Equipment section,  allowing easy access to them using the sheet's built-in macros `%{shaped_utility}` and `%{shaped_offense}`. You can also add them to the Attributes & Abilities tab if you like.
 
 My [PotionManager](https://github.com/blawson69/PotionManager) script manages all of the potions in a similar way and is a great companion to this one.
 
