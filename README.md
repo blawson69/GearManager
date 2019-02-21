@@ -10,7 +10,7 @@ Use of the [Shaped Script](https://github.com/mlenser/roll20-api-scripts/tree/ma
 
 To see a list of all available gear, type `!gm --list` into chat. This list shows the name of each item as a link which will add the item to each selected token's character in the appropriate section. Most items belong to the Utility section, but a few will be added to the Offense section since they are primarily used in that manner. If the character already has the item in the proper section, the script will ignore the attempt to add it.
 
-Some items have a die roll for the number of "uses" they have. Those items will have a Uses query on their link with a pre-rolled number based on the item's description. If you have already determined the number of uses, you may enter your own. Otherwise simply keep the pre-rolled number. The
+Some items have a die roll for the number of "uses" they have. Those items will have a Uses query on their "add" link with a pre-rolled number based on the item's description. If you have already determined the number of uses, you may enter your own. Otherwise simply keep the pre-rolled number.
 
 The list also contains a "view" link that shows the item's description in chat. The "view" link will *not* add the item to any characters.
 
