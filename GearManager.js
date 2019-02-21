@@ -13,7 +13,7 @@ var GearManager = GearManager || (function () {
     //---- INFO ----//
 
     var version = '0.1',
-        debugMode = true,
+        debugMode = false,
         styles = {
             button: 'background-color: #000; border-width: 0px; border-radius: 5px; padding: 5px 8px; color: #fff; text-align: center;',
             textButton: 'background-color: transparent; border: none; padding: 0; color: #591209; text-decoration: underline;',
@@ -101,7 +101,7 @@ var GearManager = GearManager || (function () {
                         commandHelp();
                         break;
 				}
-			}
+			} else commandHelp();
 		}
     },
 
