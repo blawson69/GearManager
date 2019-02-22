@@ -12,7 +12,7 @@ var GearManager = GearManager || (function () {
 
     //---- INFO ----//
 
-    var version = '0.1',
+    var version = '0.2',
         debugMode = false,
         styles = {
             button: 'background-color: #000; border-width: 0px; border-radius: 5px; padding: 5px 8px; color: #fff; text-align: center;',
