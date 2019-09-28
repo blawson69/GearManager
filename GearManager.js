@@ -12,7 +12,7 @@ var GearManager = GearManager || (function () {
 
     //---- INFO ----//
 
-    var version = '0.2',
+    var version = '0.3',
         debugMode = false,
         styles = {
             button: 'background-color: #000; border-width: 0px; border-radius: 5px; padding: 5px 8px; color: #fff; text-align: center;',
@@ -20,7 +20,7 @@ var GearManager = GearManager || (function () {
             code: 'font-family: "Courier New", Courier, monospace; background-color: #ddd; color: #000; padding: 2px 4px;',
             fullWidth: 'width: 100%; display: block; padding: 12px 0; text-align: center;',
             sub: 'font-weight: bold; font-size: 1.125em; margin: 6px 0;',
-            popup: 'color: mediumseagreen; cursor: help;'
+            popup: 'color: mediumseagreen; cursor: help; font-size: 0.75em;'
         },
         gear = [
             {name: "Acid", shaped_script: true, section: "offense", category: "Adventuring Gear", content: "As an action, you can splash the contents of this vial onto a creature within 5 feet of you or throw the vial up to 20 feet, shattering it on impact. In either case, make a ranged Attack against a creature or object, treating the acid as an Improvised Weapon. On a hit, the target takes 2d6 acid damage.", attack_damage_dice: 2, attack_damage_die: "d6", attack_damage_type: "acid", range: "20/60 ft.", attack_damage_average: 7},
@@ -85,10 +85,11 @@ var GearManager = GearManager || (function () {
     commandHelp = function() {
         var message = '<b>!gm --help</b><br>Sends this Help dialog to the chat window.<br><br>'
         + '<b>!gm --list</b><br>Generates a list of all gear. Select the item you want from the list and click the item\'s name to add it to all selected character(s). '
-        + 'If that character already has that item in the appropriate section, you will be prompted to update the uses manually. If it doesn\'t, it will be added '
-        + 'with the number of uses indicated in the item description. For instance, if an item has 3 charges, the new item in inventory will have 3 uses available.'
+        + '<br><br>If that character does not already have that item in the appropriate section, it will be added with the number of uses indicated in the item description. '
+        + 'For instance, if an item has 3 charges, the new item in inventory will have 3 uses available. '
         + 'If the number is based on a dice roll, a dialog will pop up for you to enter a number of uses, but with a pre-rolled number indicated. You may use that '
-        + 'number or enter your own.<br><br>Items that can be used as Improvised Weapons are added to the Offense section with the appropriate stats.'
+        + 'number or enter your own.<br><br>Items that can be used as Improvised Weapons are added to the Offense section with the appropriate stats and proficiency. '
+        + '<br><br>Adventuring Gear will have one use added if the item already exists. Wondrous Items can only be owned one at a time.'
         + '<br><br>The list also has a "view" link so you can see a description of the item in chat. This will <i>not</i> add the item to any characters.'
         + '<br><br><div align="center"><a style=\'' + styles.button + '\' href="!gm --list">Show List</a></div><br>';
         showDialog('Help', message);
@@ -102,7 +103,7 @@ var GearManager = GearManager || (function () {
         _.each(ag_items, function(item) {
             uses = (item.uses && typeof item.uses === 'string') ? ' &#63;&#123;Uses (' + item.uses + ')&#124;[[' + item.uses + ']]&#125;' : '';
             list += '<tr><td style="width: 100%"><a href="!gm --add ' + item.name + uses + '">' + item.name + '</a>';
-            if (item.section == 'offense') list += ' <span style="' + styles.popup + '" title="Added to Offense">&#9830;</span>';
+            if (item.section == 'offense') list += ' <span style="' + styles.popup + '" title="Added to Offense">⚔️</span>';
             list += '</td><td><a href="!gm --view ' + item.name + '">view</a></td></tr>';
         });
 
@@ -142,7 +143,7 @@ var GearManager = GearManager || (function () {
         // Verify that a valid item name was given
         var button = '<div style="' + styles.fullWidth + '"><a style="' + styles.button + '" href="!gm --list">&#9668; Back to List</a></div>';
         var tmpName = msg.content.substr(9).trim().split('|')[0].trim();
-        var item = _.findWhere(gear, {name: tmpName});
+        var item = _.find(gear, function (x) { return x.name == tmpName; });
         if (item) {
             var newItem, rolled_use, charNames = [], joiner = ' ', roll_formula = '';
             var categories = {"Adventuring Gear": "ADVENTURING_GEAR", "Wondrous Items": "WONDROUS"};
@@ -221,21 +222,26 @@ var GearManager = GearManager || (function () {
                     var char_id = token.get('represents');
                     var character = getObj('character', char_id);
                     if (character) {
-                        // Check to see if the player already has this item in the correct section
-                        var rep_section = (item.section == 'utility') ? 'repeating_utility_' : 'repeating_offense_';
+
                         var currItemID = findItem(char_id, item.name, item.section);
+                        if (currItemID && item.category == "Adventuring Gear") {
+                            var tmp_uses = findObjs({ type: 'attribute', characterid: char_id, name: 'repeating_' + item.section + '_' + currItemID + '_uses' })[0];
+                            var tmp_total = findObjs({ type: 'attribute', characterid: char_id, name: 'repeating_' + item.section + '_' + currItemID + '_weight_total' })[0];
+                            if (tmp_uses) tmp_uses.setWithWorker('current', parseInt(tmp_uses.get('current')) + item.uses);
+                            if (tmp_total) tmp_total.setWithWorker('current', parseFloat(tmp_total.get('current')) + item.weight);
+                            charNames.push(character.get('name'));
+                        }
                         if (!currItemID) {
-                            // Add the new item
+                            if (typeof newItem.proficiency != 'undefined') newItem.proficiency = checkProficiency(char_id) ? 'on' : 0;
                             const data = {};
                             var RowID = generateRowID();
-                            var repString = rep_section + RowID;
+                            var repString = 'repeating_' + item.section + '_' + RowID;
                             var tmpItem = newItem;
                             tmpItem.roll_formula = tmpItem.roll_formula.replace('ROW_ID', RowID);
                             Object.keys(tmpItem).forEach(function (field) {
                                 data[repString + '_' + field] = tmpItem[field];
                             });
                             setAttrs(char_id, data);
-
                             charNames.push(character.get('name'));
                         }
 
@@ -243,7 +249,6 @@ var GearManager = GearManager || (function () {
                 }
             });
 
-            // Provide feedback
             if (charNames.length > 0) {
                 if (charNames.length > 1) charNames[charNames.length-1] = 'and ' + charNames[charNames.length-1];
                 if (charNames.length > 2) joiner = ', ';
@@ -257,16 +262,19 @@ var GearManager = GearManager || (function () {
     },
 
     findItem = function(char_id, item_name, section) {
-        var row_id = null;
-        var sections = {utility: '^(?:repeating_utility_).+$', offense: '^(?:repeating_offense_).+$'};
-        var char = getObj('character', char_id);
-        if (char) {
-            var re = new RegExp(sections[section], 'i');
-            var charAttrs = findObjs({type: 'attribute', characterid: char_id}, {caseInsensitive: true});
-            var item = _.filter(charAttrs, function (attr) { return (attr.get('current') == item_name && attr.get('name').match(re) !== null); })[0];
-            if (item) row_id = item.get('name').split('_')[2];
-        }
+        var row_id, re = new RegExp('^.*_' + section + '_.*_name$', 'i');
+        var items = _.filter(findObjs({type: 'attribute', characterid: char_id}, {caseInsensitive: true}), function (x) { return x.get('name').match(re) !== null; });
+        var item = _.find(items, function (i) { return (i.get('current').replace(/\W/, '') == item_name.replace(/\W/, '')); });
+        if (item) row_id = item.get('name').split('_')[2];
         return row_id;
+    },
+
+    checkProficiency = function (char_id) {
+        var prof = false, re = new RegExp('^repeating_feat_.*_content$', 'i');
+        var feats = _.filter(findObjs({type: 'attribute', characterid: char_id}, {caseInsensitive: true}), function (x) { return x.get('name').match(re) !== null; });
+        var feat = _.find(feats, function (i) { return (i.get('current').search(/Improvised\sWeapons/i) > -1); });
+        if (feat) prof = true;
+        return prof;
     },
 
     rollDice = function (expr) {
