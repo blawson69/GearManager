@@ -4,7 +4,10 @@ Enables easy adding of select Adventuring Gear and Wondrous Items to the 5e Shap
 
 On Github:	https://github.com/blawson69
 Contact me: https://app.roll20.net/users/1781274/ben-l
-Like this script? Buy me a coffee: https://venmo.com/theRealBenLawson
+
+Like this script? Buy me a coffee:
+    https://venmo.com/theRealBenLawson
+    https://paypal.me/theRealBenLawson
 */
 
 var GearManager = GearManager || (function () {
@@ -12,7 +15,7 @@ var GearManager = GearManager || (function () {
 
     //---- INFO ----//
 
-    var version = '0.3',
+    var version = '0.4',
         debugMode = false,
         styles = {
             button: 'background-color: #000; border-width: 0px; border-radius: 5px; padding: 5px 8px; color: #fff; text-align: center;',
@@ -289,6 +292,13 @@ var GearManager = GearManager || (function () {
         return result;
     },
 
+    getGear = function (type = '') {
+        var ret_gear;
+        if (type != '') ret_gear = _.filter(gear, function (x) { return x.category == type; });
+        else ret_gear = gear;
+        return ret_gear;
+    },
+
     showDialog = function (title, content) {
 		// Outputs a 5e Shaped dialog box strictly for GM
         var message = '/w GM &{template:5e-shaped} {{title=' + title + '}} {{text_big=' + content + '}}';
@@ -336,7 +346,9 @@ var GearManager = GearManager || (function () {
 
     return {
 		checkInstall: checkInstall,
-		registerEventHandlers: registerEventHandlers
+		registerEventHandlers: registerEventHandlers,
+        getGear: getGear,
+        version: version
 	};
 }());
 
