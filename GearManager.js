@@ -70,11 +70,11 @@ var GearManager = GearManager || (function () {
 
     commandHelp = function() {
         var message = '';
-        message += '<b>List</b> all gear. Click the name of an item to add it to all selected character(s). '
+        message += 'Use the button to list all gear. Click the name of an item to add it to all selected character(s). '
         + '<br><br>Click the <span style="font-family: Webdings;">i</span> see a description of the item. This will <i>not</i> add the item to any characters.'
-        + '<div style="' + styles.buttonWrapper + '"><a style="' + styles.button + '" href="!gm --list" title="Show Gear">!gm --list</a></div>';
-        message += '<hr><b>Import</b> your custom items from GearManager handouts. These will be added to the core items.'
-        + '<div style="' + styles.buttonWrapper + '"><a style="' + styles.button + '" href="!gm --import" title="Import">!gm --import</a></div>';
+        + '<div style="' + styles.buttonWrapper + '"><a style="' + styles.button + '" href="!gm --list">Show Gear</a></div>';
+        message += '<hr>Import your custom items from GearManager handouts. These will be added to the core items.'
+        + '<div style="' + styles.buttonWrapper + '"><a style="' + styles.button + '" href="!gm --import">Import</a></div>';
         message += '<br>See the <a style="' + styles.textButton + '" href="https://github.com/blawson69/GearManager">documentation</a> for complete instructions.<br>';
         showDialog('Help', message);
     },
