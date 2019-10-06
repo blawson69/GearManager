@@ -16,7 +16,7 @@ When items are added to the Offense section, the script will try to determine if
 
 Some items have a die roll for the number of "uses" they have. Those items will have a Uses query on their "add" link with a pre-rolled number based on the item's description. If you have already determined the number of uses, you may enter your own. Otherwise simply keep the pre-rolled number.
 
-The list also contains a <span style="font-family: Webdings;">i</span> link that shows the item's description in chat. Viewing will *not* add the item to any characters.
+The list also contains an info link to the right of the name that shows the item's description in chat. Viewing will *not* add the item to any characters.
 
 To view a succinct version of this information in chat, sent `!gm --help`.
 
