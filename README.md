@@ -52,7 +52,7 @@ Utility items must contain the following properties in addition to the name and 
 
 Examples:
 
-> Baby Oil|As an action, you can apply this oil to your skin, granting a +3 to your opposing grapple check for [[1d4+1]] minutes.|1|1
+> Baby Oil|As an action, you can apply this oil to your skin, granting a +3 to your opposing Grapple checks for [[1d4+1]] minutes.|1|1
 
 > Legos|As an action, you can spread this bag of pointy plastic terrors over a 10 ft. square area. Any creature that enters the area has its speed reduced to 5 and must succeed on a DC 15 Dexterity saving throw or take 1d4 piercing damage.|1|1|15|DEXTERITY
 
@@ -60,7 +60,7 @@ Examples:
 
 Wondrous Items are all magical items that are not weapons but have a utility of some sort. Items that have a number of charges to use are typically a good candidate for the utility section and thus for adding to your custom GearManager: Wondrous list. You may use the core Wondrous Items as examples of which of your custom items you may want to include in your import.
 
-Wondrous Items must contain the following properties in addition to the name and description: number of uses, when the current number of uses recharges, and weight. The uses (or charges) may be a static number or a die roll expression depending on how your item works. For the recharge time, indicate what should trigger the recharging of the item. You have can use any of the available options for the 5e Shaped Sheet, but the common ones for magic items are "long rest" (suggested for items that recharge at dawn), "short or long rest" and "manual". Use "manual" when the item does not automatically recharge at a certain time.
+Wondrous Items must contain the following properties in addition to the name and description: number of uses, when the current number of uses recharges, and weight. The uses (or charges) may be a static number or a die roll expression depending on how your item works. For the recharge time, indicate what should trigger the recharging of the item. You can use any of the available options for the 5e Shaped Sheet, but the common ones for magic items are "long rest" (suggested for items that recharge at dawn), "short or long rest" and "manual". Use "manual" when the item does not automatically recharge at a certain time.
 
 Some items may require a saving throw, and they will follow the same guidelines as the utility items [above](#utility). Your Wondrous Item may also provide healing, so there are 3 additional properties for these items: the number of dice to roll, the type of dice (d4, d6, etc.) to roll, and the number of bonus points to add to the roll. All three of these must all exist for any item to provide healing.
 
