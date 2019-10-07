@@ -212,11 +212,7 @@ var GearManager = GearManager || (function () {
                         var currItemID = findItem(char_id, item.name, item.section);
                         if (currItemID && item.category == "Adventuring Gear") {
                             var tmp_uses = findObjs({ type: 'attribute', characterid: char_id, name: 'repeating_' + item.section + '_' + currItemID + '_uses' })[0];
-                            var tmp_total = findObjs({ type: 'attribute', characterid: char_id, name: 'repeating_' + item.section + '_' + currItemID + '_weight_total' })[0];
-                            var uses_count = (tmp_uses) ? parseInt(tmp_uses.get('current')) + 1 : 1;
-                            var weight = (tmp_total.get('current') == '' || tmp_total.get('current') == '0') ? uses_count * item.weight : item.weight;
-                            if (tmp_uses) tmp_uses.setWithWorker('current', uses_count);
-                            if (tmp_total) tmp_total.setWithWorker('current', weight);
+                            tmp_uses.setWithWorker('current', toNumber(tmp_uses.get('current')) + newItem.uses);
                             charNames.push(character.get('name'));
                         }
                         if (!currItemID) {
@@ -411,6 +407,12 @@ var GearManager = GearManager || (function () {
         var item = _.find(items, function (i) { return (i.get('current').replace(/\W/, '') == item_name.replace(/\W/, '')); });
         if (item) row_id = item.get('name').split('_')[2];
         return row_id;
+    },
+
+    toNumber = function (num) {
+        var ret;
+        if (typeof num == 'string') num = num.replace(/\D*/i, '');
+        return Number(num);
     },
 
     checkProficiency = function (char_id) {
