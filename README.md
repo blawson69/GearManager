@@ -32,7 +32,7 @@ Note: To remove an item, simply delete it from the handout and re-import. To del
 
 Offense items are non-weapons that are used nevertheless to directly inflict damage. They are considered ranged weapons, typically a liquid of some kind which is thrown a short distance. All such offensive items are considered Improvised Weapons.
 
-As a weapon, your custom offense item must contain the following properties in addition to the name and description: The number of dice to roll, the type of dice (d4, d6, etc.) to roll, the type of damage inflicted, the range in feet it can be thrown, and the average amount of damage inflicted. All properties should be separated by a pipe character (|) in this order:
+As a weapon, your custom offense item must contain the following properties in addition to the name and description: The number of dice to roll, the type of dice (d4, d6, etc.) to roll, the type of damage inflicted, the range in feet it can be thrown, and the average amount of damage inflicted. All properties should be separated by a pipe character "|" in this order:
 
 `Name|Description|# of Dice|Die|Damage Type|Range|Average`
 
@@ -44,7 +44,7 @@ Example:
 
 Adventuring Gear that does not count as an Improvised Weapon belongs in the utility section. These items either inflict passive damage or create other effects or provide utility in non-combative ways. These kinds of items are generally anything that has a finite number of uses that you can collect in your travels.
 
-Utility items must contain the following properties in addition to the name and description: number of uses and weight. Some items may require a saving throw, so there are 2 additional properties for these items: the DC of the save, and the ability to use for the save. It is not necessary to add the saving throw parameters if the cause for a save is passive (waiting for creatures to enter an area of effect for instance), but these 2 properties must both exist if you want to include saving throw when the item is activated. All properties should be separated by a pipe character (|) in this order:
+Utility items must contain the following properties in addition to the name and description: number of uses and weight. Some items may require a saving throw, so there are 2 additional properties for these items: the DC of the save, and the ability to use for the save. It is not necessary to add the saving throw parameters if the cause for a save is passive (waiting for creatures to enter an area of effect for instance), but these 2 properties must both exist if you want to include saving throw when the item is activated. All properties should be separated by a pipe character "|" in this order:
 
 `Name|Description|Uses|Weight`
 
@@ -64,7 +64,7 @@ Wondrous Items must contain the following properties in addition to the name and
 
 Some items may require a saving throw, and they will follow the same guidelines as the utility items [above](#utility). Your Wondrous Item may also provide healing, so there are 3 additional properties for these items: the number of dice to roll, the type of dice (d4, d6, etc.) to roll, and the number of bonus points to add to the roll. All three of these must all exist for any item to provide healing.
 
-All properties should be separated by a pipe character (|) in this order:
+All properties should be separated by a pipe character "|" in this order:
 
 `Name|Description|Uses|Weight|Recharge`
 
