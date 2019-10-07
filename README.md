@@ -1,8 +1,8 @@
 # GearManager
 
-This [Roll20](http://roll20.net/) script fixes a drawback to the [5e Shaped Sheet](http://github.com/mlenser/roll20-character-sheets/tree/master/5eShaped) where the items in the Equipment section are only accessible by opening the character sheet. GearManager adds select Adventuring Gear and Wondrous Items to the Utility or Offense section of the character sheet instead of the Equipment section,  allowing easy access to them using the sheet's built-in macros `%{shaped_utility}` and `%{shaped_offense}`. You can also add them individually to the Attributes & Abilities tab if you like.
+**New in version 0.5:** Import your own custom Adventuring Gear and Wondrous Items into GearManager!
 
-You can now add your own Adventuring Gear and Wondrous Items using the import function (below).
+This [Roll20](http://roll20.net/) script fixes a drawback to the [5e Shaped Sheet](http://github.com/mlenser/roll20-character-sheets/tree/master/5eShaped) where the items in the Equipment section are only accessible by opening the character sheet. GearManager adds select Adventuring Gear and Wondrous Items to the Utility or Offense section of the character sheet instead of the Equipment section,  allowing easy access to them using the sheet's built-in macros `%{shaped_utility}` and `%{shaped_offense}`. You can also add them individually to the Attributes & Abilities tab if you like.
 
 My [PotionManager](https://github.com/blawson69/PotionManager) script manages all of the potions in a similar way and is a great companion to this one.
 
@@ -18,11 +18,11 @@ Some items have a die roll for the number of "uses" they have. Those items will 
 
 The list also contains an info link to the right of the name that shows the item's description in chat. Viewing will *not* add the item to any characters.
 
-To view a succinct version of this information in chat, sent `!gm --help`.
+To view a succinct version of this information in chat, sent `!gm --help`. The help dialog has buttons to show the list and to import your custom items.
 
 ## Import
 
-To maintain a logical separation, import items are created in three handouts. One for all offensive items (to be added to the offense section of the character sheet), one for Adventuring Gear that does not belong in offense (to be added to the utility section), and one for Wondrous Items (all of which are added to the utility section). Each has its own specific formatting as outlined below. To create items for import, simply create a handout with the title "GearManager: " plus either "Offense", "Utility", or "Wondrous" and add each item in a separate paragraph with the correct format.
+You may import your custom Adventuring Gear and Wondrous Items using the `!gm --import` command. To maintain a logical separation, import items are created in three handouts. One for all offensive items (to be added to the offense section of the character sheet), one for Adventuring Gear that does not belong in offense (to be added to the utility section), and one for Wondrous Items (all of which are added to the utility section). Each has its own specific formatting as outlined below. To create items for import, simply create a handout with the title "GearManager: " plus either "Offense", "Utility", or "Wondrous" and add each item in a separate paragraph with the correct format.
 
 To include a die roll expression that should be executed when the item is used, enclose it in double square brackets, i.e. [[]]. Note: When viewing from the list, GearManager will not display the square brackets but will display the die roll expression in red to differentiate it from a static expression.
 
