@@ -15,7 +15,7 @@ var GearManager = GearManager || (function () {
 
     //---- INFO ----//
 
-    var version = '0.5',
+    var version = '0.6',
         debugMode = false,
         styles = {
             button: 'background-color: #000; border-width: 0px; border-radius: 5px; padding: 5px 8px; color: #fff; text-align: center;',
@@ -48,7 +48,7 @@ var GearManager = GearManager || (function () {
 			if (parms[1] && playerIsGM(msg.playerid)) {
 				switch (parms[1]) {
 					case '--add':
-						commandAdd(msg);
+						commandAdd(msg, false);
 						break;
                     case '--list':
                         commandList();
@@ -89,7 +89,7 @@ var GearManager = GearManager || (function () {
         _.each(ag_items, function(item) {
             uses = (item.uses && typeof item.uses === 'string') ? ' &#63;&#123;Uses (' + item.uses + ')&#124;[[' + item.uses + ']]&#125;' : '';
             list += '<tr><td style="width: 100%"><a href="!gm --add ' + item.name + uses + '" title="Add to Selected Character(s)">' + item.name + '</a>';
-            if (item.section == 'offense') list += ' <span style="' + styles.popup + '" title="Added to Offense">⚔️</span>';
+            if (item.section == 'offense') list += ' <span style="' + styles.popup + '" title="Offensive Item">⚔️</span>';
             list += '</td><td><a style=\'' + styles.infoLink + '\' href="!gm --view ' + item.name + '" title="View ' + item.name + '">i</a></td></tr>';
         });
         list += '</table><hr>';
@@ -118,17 +118,21 @@ var GearManager = GearManager || (function () {
         }
     },
 
-    commandAdd = function(msg) {
+    commandAdd = function(msg, external = true) {
         // Add a item to selected character(s)
+        var retval = true;
 		if (!msg.selected || !msg.selected.length) {
-			showDialog('Error', 'No tokens are selected!');
-			return;
+            retval = false;
+			if (!external) showDialog('Error', 'No tokens are selected!');
+            else log('GearManager Error: No tokens are selected!');
+			return retval;
 		}
 
         // Verify that a valid item name was given
         var button = '<div style="' + styles.buttonWrapper + '"><a style="' + styles.button + '" href="!gm --list">&#9668; Back to List</a></div>';
-        var tmpName = msg.content.substr(9).trim().split('|')[0].trim();
-        var item = _.find(getGear(), function (x) { return x.name == tmpName; });
+        var aName = msg.content.replace('!gm --add ', '').split(/\s*\|\s*/);
+        //var tmpName = (msg.content.search('--add') != -1) ? msg.content.substr(9).trim().split('|')[0].trim() : msg.content;
+        var item = _.find(getGear(), function (x) { return x.name == aName[0].trim(); });
         if (item) {
             var newItem, rolled_use, charNames = [], joiner = ' ', roll_formula = '';
             var categories = {"Adventuring Gear": "ADVENTURING_GEAR", "Wondrous Items": "WONDROUS"};
@@ -200,8 +204,8 @@ var GearManager = GearManager || (function () {
                 };
             }
 
-            rolled_use =  msg.content.replace('!gm --add ' + item.name, '').replace(' |', '').trim();
-            if (rolled_use.length > 0) newItem.uses = parseInt(rolled_use);
+            //rolled_use =  msg.content.replace('!gm --add ' + item.name, '').replace(' |', '').trim();
+            if (aName[1]) newItem.uses = parseInt(aName[1]);
 
             _.each(msg.selected, function(obj) {
                 var token = getObj(obj._type, obj._id);
@@ -236,13 +240,18 @@ var GearManager = GearManager || (function () {
             if (charNames.length > 0) {
                 if (charNames.length > 1) charNames[charNames.length-1] = 'and ' + charNames[charNames.length-1];
                 if (charNames.length > 2) joiner = ', ';
-                showDialog('Gear Added', item.name + ' was given to ' + charNames.join(joiner) + '.' + button);
+                if (!external) showDialog('Gear Added', item.name + ' was given to ' + charNames.join(joiner) + '.' + button);
             } else {
-                showDialog('Gear Not Added', 'The selected characters already possess "' + item.name + '." Nothing was added.' + button);
+                retval = false;
+    			if (!external) showDialog('Gear Not Added', 'The selected characters already possess "' + item.name + '." Nothing was added.' + button);
+                else log('GearManager Error: The selected characters already possess "' + item.name + '." Nothing was added.');
             }
         } else {
-            showDialog('Gear Not Added', 'The item "' + tmpName + '" does not exist! Try adding from the list this time.' + button);
+            retval = false;
+            if (!external) showDialog('Gear Not Added', 'The item "' + tmpName + '" does not exist! Try adding from the list this time.' + button);
+            else log('GearManager Error: The item "' + tmpName + '" does not exist!');
         }
+        return retval;
     },
 
     commandImport = function () {
@@ -548,6 +557,7 @@ var GearManager = GearManager || (function () {
 		checkInstall: checkInstall,
 		registerEventHandlers: registerEventHandlers,
         getGear: getGear,
+        addGear: commandAdd,
         version: version
 	};
 }());
